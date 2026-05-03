@@ -2838,7 +2838,7 @@
             <div class="acc-mock-dot" style="background:#ff5f57"></div>
             <div class="acc-mock-dot" style="background:#febc2e"></div>
             <div class="acc-mock-dot" style="background:#28c840"></div>
-            <div class="acc-mock-title">freightbol.com / dashboard</div>
+            <div class="acc-mock-title">freightbol.org / dashboard</div>
           </div>
           <div class="acc-mock-body">
             <div class="acc-mock-row"><span>BOL #2026-04891</span><span class="acc-mock-status">Delivered</span></div>
@@ -3151,7 +3151,7 @@
           <p>You may use the free tier without creating an account. Pro subscriptions require a valid email and payment method. You are responsible for keeping your login credentials secure and for all activity on your account.</p>
 
           <h3>4. Subscription, Billing & Auto-Renewal</h3>
-          <p>Pro subscriptions are billed monthly at $9.99/month or annually (where offered). Subscriptions <strong>automatically renew</strong> at the end of each billing cycle until you cancel. You may cancel at any time from your account settings. Cancellation takes effect at the end of the current billing period; we do not pro-rate refunds for unused time. A 14-day free trial is available for new accounts; the trial converts to a paid subscription unless cancelled before it ends.</p>
+          <p>Pro subscriptions are billed monthly at $9.99/month or annually (where offered). Subscriptions <strong>automatically renew</strong> at the end of each billing cycle until you cancel. You may cancel at any time from your account settings. Cancellation takes effect at the end of the current billing period; we do not pro-rate refunds for unused time. New accounts may start a 14-day free trial of Pro features without entering a payment method. At the end of the trial, your account reverts to the free tier unless you choose to upgrade by adding payment information. We will not charge any card without your explicit consent.</p>
 
           <h3>5. Acceptable Use</h3>
           <p>You agree not to: (a) use the Service for any illegal purpose; (b) attempt to reverse-engineer, scrape, or republish the Service; (c) generate fraudulent, misleading, or counterfeit BOL documents; (d) resell access to your Pro account.</p>
@@ -3166,7 +3166,7 @@
           <p>The Service is provided "as is." To the maximum extent permitted by law, FreightBOL is not liable for any indirect, incidental, or consequential damages, including lost profits, lost shipments, freight claims, or business interruption arising from your use of the Service. Our total liability for any claim is limited to the amount you paid us in the 12 months preceding the claim.</p>
 
           <h3>9. Governing Law</h3>
-          <p>These Terms are governed by the laws of the State of Michigan. Disputes will be resolved in state or federal courts located in Michigan.</p>
+          <p>These Terms are governed by the laws of the State of California. Disputes will be resolved in state or federal courts located in California.</p>
 
           <h3>10. Changes</h3>
           <p>We may update these Terms from time to time. Material changes will be announced via email and/or a notice on the Service at least 30 days before taking effect.</p>
@@ -3285,16 +3285,13 @@
           <h3>DMCA / Copyright</h3>
           <p>To report copyright infringement, send written notice including: (a) signature of copyright owner or agent; (b) identification of the work claimed to be infringed; (c) location of the allegedly infringing material; (d) your contact info; (e) statement of good-faith belief; (f) statement of accuracy under penalty of perjury.</p>
           <p>Send to: <strong>dmca@freightbol.org</strong></p>
-
-          <h3>Mailing Address</h3>
-          <p>FreightBOL LLC<br>[Your Michigan business address]<br>[City, State, ZIP]</p>
         </section>
 
       </main>
     </div>
 
     <div class="legal-foot">
-      <p>These templates are starting points. Before launch, have a licensed attorney review all policies, especially if you serve EU users (GDPR), California users (CCPA), or process payments. Consider services like <strong>Termly</strong> or <strong>Iubenda</strong> for auto-updating policies, or invest in custom legal review (~$500-2000 one-time).</p>
+      <p>FreightBOL is a document generation tool. We are not a carrier, broker, or shipper. Users are responsible for verifying all shipment information before tendering freight. By using FreightBOL, you agree to our Terms and Privacy Policy.</p>
     </div>
   </div>
 </div><!-- /page-legal -->
@@ -5111,12 +5108,51 @@
   function addNewAddress() {
     const name = prompt('Address name (e.g. "Acme Manufacturing")');
     if (!name) return;
-    const addr = prompt('Full address (one line, comma-separated)');
-    if (!addr) return;
+    const street = prompt('Street address (e.g. "1234 Industrial Blvd")');
+    if (street === null) return;
+    const cityStateZip = prompt('City, State ZIP (e.g. "Detroit, MI 48201")');
+    if (cityStateZip === null) return;
+    const phone = prompt('Phone number (optional, leave blank to skip)') || '';
     const tag = confirm('Is this a Consignee?\nClick OK for Consignee, Cancel for Shipper.') ? 'consignee' : 'shipper';
-    DEMO_ADDRS.push({ name, body: addr, tag });
+    // assemble the body with each piece on its own line
+    const bodyLines = [street, cityStateZip];
+    if (phone.trim()) bodyLines.push(phone.trim());
+    const body = bodyLines.filter(l => l && l.trim()).join('\n');
+    DEMO_ADDRS.push({ name, body, tag });
     renderDashboard();
     showToast(`Added ${name} to address book ✓`);
+  }
+
+  function editAddress(idx) {
+    const a = DEMO_ADDRS[idx];
+    if (!a) return;
+    // parse existing body — split by newlines to figure out current values
+    const lines = (a.body || '').split('\n');
+    // heuristic: last line that looks like a phone number is the phone, rest is address
+    const phoneRegex = /^[\d\s\-\(\)\+\.x]+$/;
+    let existingPhone = '';
+    let existingStreet = '';
+    let existingCityStateZip = '';
+    if (lines.length >= 1) existingStreet = lines[0] || '';
+    if (lines.length >= 2) existingCityStateZip = lines[1] || '';
+    if (lines.length >= 3 && phoneRegex.test(lines[lines.length - 1].trim())) {
+      existingPhone = lines[lines.length - 1].trim();
+    }
+
+    const name = prompt('Address name', a.name);
+    if (name === null) return;
+    const street = prompt('Street address', existingStreet);
+    if (street === null) return;
+    const cityStateZip = prompt('City, State ZIP', existingCityStateZip);
+    if (cityStateZip === null) return;
+    const phone = prompt('Phone number (optional)', existingPhone) || '';
+
+    a.name = name;
+    const bodyLines = [street, cityStateZip];
+    if (phone.trim()) bodyLines.push(phone.trim());
+    a.body = bodyLines.filter(l => l && l.trim()).join('\n');
+    renderDashboard();
+    showToast('Address updated ✓');
   }
 
   function addNewCarrier() {
@@ -5155,19 +5191,6 @@
     if (!role) return;
     showToast(`Invite sent to ${email} as ${role} ✓`);
     // In production: POST /api/team/invite, send email via Resend, add row when accepted
-  }
-
-  function editAddress(idx) {
-    const a = DEMO_ADDRS[idx];
-    if (!a) return;
-    const name = prompt('Address name', a.name);
-    if (name === null) return;
-    const body = prompt('Full address', a.body);
-    if (body === null) return;
-    a.name = name;
-    a.body = body;
-    renderDashboard();
-    showToast('Address updated ✓');
   }
 
   function editCarrier(idx) {
