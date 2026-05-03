@@ -4347,12 +4347,44 @@
 
     if (!type || !message) return;
 
-    // In production: POST to /api/feedback (or Formspree, Tally, Resend, etc.)
-    // For now, log and show success state
-    console.log('Feedback submitted:', { type, message, email, notify, timestamp: new Date().toISOString() });
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const originalBtnText = submitBtn ? submitBtn.textContent : '';
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
+    }
 
-    document.getElementById('suggestionForm').style.display = 'none';
-    document.getElementById('suggestSuccess').style.display = 'block';
+    fetch('https://formspree.io/f/xjglgpdq', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        type,
+        message,
+        email,
+        notify,
+        source: 'freightbol.org',
+        timestamp: new Date().toISOString()
+      })
+    })
+    .then(response => {
+      if (response.ok) {
+        document.getElementById('suggestionForm').style.display = 'none';
+        document.getElementById('suggestSuccess').style.display = 'block';
+      } else {
+        alert('Hmm, something went wrong sending that. Please email hello@freightbol.org directly.');
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalBtnText;
+        }
+      }
+    })
+    .catch(err => {
+      alert('Network error. Please email hello@freightbol.org directly.');
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalBtnText;
+      }
+    });
   }
 
   function resetSuggestion() {
