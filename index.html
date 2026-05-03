@@ -4391,6 +4391,12 @@
     document.getElementById('suggestionForm').reset();
     document.getElementById('suggestionForm').style.display = 'block';
     document.getElementById('suggestSuccess').style.display = 'none';
+    // re-enable submit button (it was disabled and re-labeled "Sending..." during last submit)
+    const submitBtn = document.querySelector('#suggestionForm button[type="submit"]');
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send Feedback →';
+    }
   }
 
   // ============== BILLING TOGGLE (Monthly / Annual) ==============
