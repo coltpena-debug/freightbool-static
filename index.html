@@ -1952,9 +1952,10 @@
   .legal-foot strong { color: var(--accent-2); }
 
   @media print {
-    @page { size: letter; margin: 0.35in; }
+    @page { size: letter; margin: 0.3in; }
     * { box-shadow: none !important; }
-    body { background: white; color: black; font-size: 8.5pt; line-height: 1.25; }
+    html, body { background: white !important; color: black; font-size: 8pt; line-height: 1.18; }
+    body { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
 
     /* hide everything that's not the BOL itself */
     .topbar, .hero, .strip, footer, .add-row, .row-action,
@@ -1963,97 +1964,121 @@
     .no-print, .addr-pill { display: none !important; }
     .print-only { display: block !important; }
 
-    .paper-wrap { background: white; padding: 0; }
+    .paper-wrap { background: white; padding: 0; margin: 0; }
     .paper {
       box-shadow: none; border: none; padding: 0; max-width: 100%;
       margin: 0;
     }
 
+    /* ==== FORCE ONE-PAGE LAYOUT ==== */
+    /* the entire BOL is one block — no page breaks anywhere inside */
+    .paper { page-break-inside: avoid; break-inside: avoid; }
+
     /* tighter title row */
-    .paper-head { margin-bottom: 6px; padding-bottom: 4px; border-bottom: 2px solid black; }
-    .paper-head h2 { font-size: 18pt; line-height: 1; }
-    .paper-head .doctype-stack { font-size: 7.5pt; }
+    .paper-head { margin-bottom: 4px !important; padding-bottom: 3px !important; border-bottom: 2px solid black; }
+    .paper-head h2 { font-size: 16pt !important; line-height: 1; }
+    .paper-head .doctype-stack { font-size: 7pt !important; }
 
     /* tighten everything */
-    .top-row, .bol-grid, .sig-grid { margin-bottom: 4px !important; }
+    .top-row, .bol-grid, .sig-grid { margin-bottom: 3px !important; }
     .top-row { border-width: 1.5px; }
-    .top-row > .fb { padding: 4px 8px !important; border-right-width: 1.5px; }
-    .bol-cell { border-width: 1px !important; }
+    .top-row > .fb { padding: 3px 6px !important; border-right-width: 1.5px; }
+    .bol-cell { border-width: 1px !important; padding: 3px 6px !important; }
     .bol-grid { border-width: 1.5px; }
 
-    .fb { padding: 4px 8px !important; }
-    .fb-label { font-size: 8pt !important; margin-bottom: 1px !important; }
+    .fb { padding: 3px 6px !important; }
+    .fb-label { font-size: 7pt !important; margin-bottom: 1px !important; letter-spacing: 0.04em; }
     .fb input, .fb textarea, .fb select {
-      background: white !important; padding: 1px 3px !important;
-      font-size: 8.5pt !important; line-height: 1.2 !important;
+      background: white !important; padding: 0 2px !important;
+      font-size: 8pt !important; line-height: 1.15 !important;
     }
-    .fb textarea { min-height: 38px !important; }
-    .fb-row { gap: 6px !important; margin-top: 3px !important; }
+    .fb textarea { min-height: 26px !important; }
+    .fb-row { gap: 6px !important; margin-top: 2px !important; }
 
-    /* barcode space — small but visible */
+    /* barcode space — tiny but visible */
     .barcode-box {
-      min-height: 28px !important; padding: 3px !important;
-      margin-top: 3px !important; border: 1px solid #999;
+      min-height: 22px !important; padding: 2px !important;
+      margin-top: 2px !important; border: 1px solid #999;
     }
     .barcode-box .bc-empty {
-      font-size: 8pt !important; color: #aaa !important;
-      padding: 6px 0 !important; letter-spacing: 0.15em;
+      font-size: 7pt !important; color: #aaa !important;
+      padding: 4px 0 !important; letter-spacing: 0.12em;
     }
 
     /* table label bars: smaller */
     .table-label {
-      font-size: 8.5pt !important;
-      padding: 3px 8px !important;
-      margin: 6px 0 0 !important;
+      font-size: 8pt !important;
+      padding: 2px 6px !important;
+      margin: 4px 0 0 !important;
+      background: black !important; color: white !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
     }
 
     /* logo sized for print */
-    #bolLogo { max-height: 50px !important; max-width: 130px !important; }
-    /* signature stamps print darker and a bit smaller */
-    .sig-stamp { max-height: 28px !important; opacity: 1 !important; }
-    .sig-date-stamp { font-size: 9pt !important; }
+    #bolLogo { max-height: 44px !important; max-width: 110px !important; }
+    /* signature stamps print darker and smaller */
+    .sig-stamp { max-height: 24px !important; opacity: 1 !important; }
+    .sig-date-stamp { font-size: 8pt !important; }
 
     /* tables: compress hard */
     .bol-table { margin-bottom: 0 !important; border-width: 1.5px; }
     .bol-table th, .bol-table td {
-      padding: 1px 4px !important; font-size: 8pt !important; line-height: 1.15;
+      padding: 1px 3px !important; font-size: 7.5pt !important; line-height: 1.1;
     }
-    .bol-table th { font-size: 7.5pt !important; padding: 2px 4px !important; background: #f0f0f0 !important; }
+    .bol-table th {
+      font-size: 7pt !important; padding: 2px 3px !important;
+      background: #e8e8e8 !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
     .bol-table input {
-      background: white !important; padding: 1px 2px !important;
-      font-size: 8.5pt !important;
+      background: white !important; padding: 0 2px !important;
+      font-size: 8pt !important;
+    }
+
+    /* tables and their rows shouldn't break */
+    .bol-table, .bol-table tr, .bol-table thead, .bol-table tbody {
+      page-break-inside: avoid !important;
+      break-inside: avoid !important;
     }
 
     /* legal text smaller */
     .legal {
-      font-size: 7pt !important; padding: 4px 6px !important;
-      line-height: 1.3 !important; margin-top: 4px !important;
+      font-size: 6.5pt !important; padding: 3px 5px !important;
+      line-height: 1.25 !important; margin-top: 3px !important;
       background: white !important;
     }
 
     /* signatures compact */
-    .sig-grid { border-width: 1.5px; margin-top: 4px !important; }
-    .sig-block { padding: 5px 8px 14px !important; border-right-width: 1.5px; }
-    .sig-title { font-size: 9pt !important; margin-bottom: 2px !important; }
-    .sig-fineprint { font-size: 6.5pt !important; line-height: 1.3 !important; margin-bottom: 8px !important; }
-    .sig-line { height: 22px !important; }
-    .sig-line::after { font-size: 7pt !important; bottom: -12px !important; }
+    .sig-grid { border-width: 1.5px; margin-top: 3px !important; }
+    .sig-block { padding: 4px 6px 12px !important; border-right-width: 1.5px; }
+    .sig-title { font-size: 8.5pt !important; margin-bottom: 1px !important; }
+    .sig-fineprint { font-size: 6pt !important; line-height: 1.2 !important; margin-bottom: 6px !important; }
+    .sig-line { height: 18px !important; }
+    .sig-line::after { font-size: 6.5pt !important; bottom: -10px !important; }
 
     /* COD section tighter */
     .paper > div[style*="grid-template-columns"] > .fb {
-      padding: 3px 8px !important;
+      padding: 2px 6px !important;
     }
 
     /* check groups compress */
-    .check-group { gap: 8px !important; padding: 1px 0 !important; }
-    .check-group label { font-size: 8pt !important; gap: 3px !important; }
+    .check-group { gap: 6px !important; padding: 1px 0 !important; }
+    .check-group label { font-size: 7.5pt !important; gap: 3px !important; }
     .check-group input[type="checkbox"], .check-group input[type="radio"] {
-      width: 10px !important; height: 10px !important;
+      width: 9px !important; height: 9px !important;
     }
 
     /* never break key sections across pages */
-    .top-row, .bol-grid, .sig-grid, .legal, .bol-table { page-break-inside: avoid; }
-    .table-label + .bol-table { page-break-before: avoid; }
+    .top-row, .bol-grid, .sig-grid, .legal, .bol-table {
+      page-break-inside: avoid !important;
+      break-inside: avoid !important;
+    }
+    .table-label + .bol-table,
+    .table-label + .table-wrap { page-break-before: avoid !important; break-before: avoid !important; }
+    /* table-wrap shouldn't add scroll in print */
+    .table-wrap { overflow: visible !important; }
 
     /* ensure all input/textarea text prints in black */
     input, textarea, select { color: black !important; outline: none !important; border: none !important; }
