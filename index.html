@@ -317,7 +317,58 @@
   .free-banner strong { color: var(--accent); }
   .free-banner a { color: var(--accent-2); text-decoration: none; font-weight: 700; cursor: pointer; }
 
-  /* === MAIN BOL FORM === */
+  /* === DEMO STAMP ===
+     Plain HTML element rendered inline at the top of the BOL paper.
+     Visible on screen and prints reliably (it's just regular content).
+     Hidden when not in demo mode via .is-demo class on body. */
+  .demo-stamp { display: none; }
+
+  body.is-demo .demo-stamp {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    background: #ffe6dd;
+    border: 4px solid #c92a2a;
+    color: #c92a2a;
+    padding: 14px 18px;
+    margin-bottom: 16px;
+    font-family: 'Sora', 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 22px;
+    letter-spacing: 0.08em;
+    text-align: center;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  body.is-demo .demo-stamp-icon {
+    font-size: 26px;
+    line-height: 1;
+  }
+  body.is-demo .demo-stamp-sub {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    margin-top: 4px;
+    color: #c92a2a;
+    opacity: 0.8;
+  }
+
+  /* Print: keep colors and force visibility */
+  @media print {
+    body.is-demo .demo-stamp {
+      display: flex !important;
+      background: #ffe6dd !important;
+      border: 4px solid #c92a2a !important;
+      color: #c92a2a !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    body.is-demo .demo-stamp-sub { color: #c92a2a !important; }
+  }
+
   .paper-wrap { background: var(--bg-2); padding: 40px 24px 80px; }
   .paper {
     max-width: 1100px; margin: 0 auto;
@@ -881,6 +932,55 @@
   .modal li::before { content: '◆'; color: var(--accent-2); }
   .modal-close { position: absolute; top: 12px; right: 12px; background: transparent; border: none; color: #f5f3ec; font-size: 22px; cursor: pointer; }
 
+  /* === PICKER MODAL (address book + carrier dropdown) === */
+  .picker-modal { max-width: 520px !important; padding: 24px 22px 18px !important; }
+  .picker-modal h3 { margin: 0 0 14px; font-size: 22px; }
+  .picker-search-wrap { margin-bottom: 12px; }
+  .picker-search {
+    width: 100%; padding: 10px 12px;
+    background: var(--bg-2); border: 1px solid #2a2c25;
+    color: #f5f3ec; font-family: 'Sora', sans-serif; font-size: 14px;
+    outline: none; box-sizing: border-box;
+  }
+  .picker-search:focus { border-color: var(--accent); }
+  .picker-list {
+    max-height: 360px; overflow-y: auto;
+    border: 1px solid #2a2c25; background: var(--bg);
+    margin-bottom: 14px;
+  }
+  .picker-item {
+    padding: 12px 14px; border-bottom: 1px solid #2a2c25;
+    cursor: pointer; transition: background 0.15s;
+    display: flex; justify-content: space-between; align-items: flex-start; gap: 10px;
+  }
+  .picker-item:last-child { border-bottom: none; }
+  .picker-item:hover { background: rgba(255,210,63,0.06); }
+  .picker-item-main { flex: 1; min-width: 0; }
+  .picker-item-name {
+    font-weight: 700; font-size: 14px; color: #f5f3ec;
+    margin-bottom: 4px;
+  }
+  .picker-item-body {
+    font-size: 12px; color: #a8aa9d; line-height: 1.4;
+    white-space: pre-wrap;
+  }
+  .picker-item-tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    padding: 3px 7px; letter-spacing: 0.06em; text-transform: uppercase;
+    flex-shrink: 0; white-space: nowrap;
+  }
+  .picker-item-tag.shipper { background: rgba(95, 196, 136, 0.18); color: #5fc488; }
+  .picker-item-tag.consignee { background: rgba(255, 91, 31, 0.18); color: var(--accent-2); }
+  .picker-item-tag.carrier { background: rgba(255, 210, 63, 0.18); color: var(--accent); }
+  .picker-item-tag.default { background: var(--accent); color: var(--ink); font-weight: 800; }
+  .picker-empty {
+    padding: 28px 16px; text-align: center; color: #888a7e;
+    font-size: 13px;
+  }
+  .picker-foot {
+    display: flex; gap: 8px; justify-content: flex-end;
+  }
+
   /* ad modal */
   .ad-modal {
     background: var(--paper); color: var(--ink);
@@ -1036,6 +1136,40 @@
     display: flex; justify-content: space-between; align-items: center;
     margin-bottom: 32px; flex-wrap: wrap; gap: 12px;
   }
+
+  /* DEMO BANNER (shown when browsing the sample Pro account) */
+  .demo-banner {
+    background: linear-gradient(135deg, rgba(255,210,63,0.16), rgba(255,91,31,0.10));
+    border: 1px solid rgba(255,210,63,0.4);
+    border-radius: 0;
+    padding: 14px 18px;
+    margin-bottom: 24px;
+  }
+  .demo-banner-inner {
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  }
+  .demo-banner-tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    font-weight: 800; letter-spacing: 0.12em;
+    background: var(--accent); color: var(--ink);
+    padding: 4px 10px;
+  }
+  .demo-banner-text {
+    font-size: 13px; color: var(--ink-2);
+    flex: 1; min-width: 200px;
+  }
+  .demo-banner-cta {
+    background: var(--accent-2); color: white;
+    border: none; padding: 8px 14px;
+    font-family: 'Sora', sans-serif; font-weight: 700; font-size: 13px;
+    cursor: pointer; transition: background .2s;
+  }
+  .demo-banner-cta:hover { background: #ff6b30; }
+  @media (max-width: 600px) {
+    .demo-banner-inner { gap: 10px; }
+    .demo-banner-cta { width: 100%; padding: 10px; }
+  }
+
   .dash-greeting {
     font-size: clamp(28px, 4vw, 40px); font-weight: 800;
     letter-spacing: -0.02em;
@@ -1990,9 +2124,19 @@
     .fb-label { font-size: 7pt !important; margin-bottom: 1px !important; letter-spacing: 0.04em; }
     .fb input, .fb textarea, .fb select {
       background: white !important; padding: 0 2px !important;
-      font-size: 8pt !important; line-height: 1.15 !important;
+      font-size: 8pt !important; line-height: 1.18 !important;
     }
-    .fb textarea { min-height: 26px !important; }
+    /* Critical: allow textareas to grow to show full content in print.
+       min-height ensures visual consistency, height:auto lets longer addresses expand. */
+    .fb textarea {
+      min-height: 36px !important;
+      height: auto !important;
+      overflow: visible !important;
+      white-space: pre-wrap !important;
+      word-wrap: break-word !important;
+      word-break: normal !important;
+      resize: none !important;
+    }
     .fb-row { gap: 6px !important; margin-top: 2px !important; }
 
     /* barcode space — tiny but visible */
@@ -2082,7 +2226,7 @@
 
     /* ensure all input/textarea text prints in black */
     input, textarea, select { color: black !important; outline: none !important; border: none !important; }
-    textarea { resize: none !important; overflow: hidden !important; }
+    /* textareas should print all their content — overflow:visible was set above */
 
     /* hide focus outlines */
     *:focus { outline: none !important; }
@@ -2158,6 +2302,16 @@
 <div class="paper-wrap">
   <div class="paper" id="bolPaper">
 
+    <!-- DEMO STAMP — inline element at top of BOL, visible only when body.is-demo -->
+    <div class="demo-stamp" aria-hidden="true">
+      <span class="demo-stamp-icon">⚠</span>
+      <span>
+        DEMO — NOT FOR ACTUAL USE
+        <span class="demo-stamp-sub">Sign up free to remove this and generate clean BOLs</span>
+      </span>
+      <span class="demo-stamp-icon">⚠</span>
+    </div>
+
     <!-- Title row -->
     <div class="paper-head">
       <div class="paper-head-left">
@@ -2190,7 +2344,11 @@
       <!-- Ship From -->
       <div class="bol-cell">
         <div class="fb">
-          <span class="fb-label">Ship From:</span>
+          <div class="fb-label-row no-print">
+            <span class="fb-label">Ship From:</span>
+            <span class="addr-pill" id="shipFromPill" onclick="openAddressPicker('shipFrom')">⌄ Pick from address book (Pro)</span>
+          </div>
+          <span class="fb-label print-only" style="display:none;">Ship From:</span>
           <textarea data-key="shipFrom" placeholder="Name&#10;Address&#10;City, State, Zip"></textarea>
           <div class="fb-row">
             <div>
@@ -2210,7 +2368,7 @@
         <div class="fb">
           <div class="fb-label-row no-print">
             <span class="fb-label">Carrier Name:</span>
-            <span class="addr-pill" id="carrierProfilePill" onclick="useCarrierProfile()">From Carrier Profile (Pro)</span>
+            <span class="addr-pill" id="carrierProfilePill" onclick="openCarrierPicker()">⌄ Pick from carriers (Pro)</span>
           </div>
           <span class="fb-label print-only" style="display:none;">Carrier Name:</span>
           <input type="text" data-key="carrier" id="carrierNameInput">
@@ -2240,7 +2398,11 @@
       <!-- Ship To -->
       <div class="bol-cell">
         <div class="fb">
-          <span class="fb-label">Ship To:</span>
+          <div class="fb-label-row no-print">
+            <span class="fb-label">Ship To:</span>
+            <span class="addr-pill" id="shipToPill" onclick="openAddressPicker('shipTo')">⌄ Pick from address book (Pro)</span>
+          </div>
+          <span class="fb-label print-only" style="display:none;">Ship To:</span>
           <textarea data-key="shipTo" placeholder="Name&#10;Address&#10;City, State, Zip"></textarea>
           <div class="fb-row">
             <div>
@@ -2945,6 +3107,15 @@
 
     <!-- LOGGED IN VIEW -->
     <div id="account-loggedin" style="display:none;">
+      <!-- DEMO BANNER (only visible in demo mode) -->
+      <div class="demo-banner" id="demoBanner" style="display:none;">
+        <div class="demo-banner-inner">
+          <span class="demo-banner-tag">◆ DEMO</span>
+          <span class="demo-banner-text">You're browsing a sample Pro account. All saving and editing is disabled. Want your own?</span>
+          <button class="demo-banner-cta" onclick="signOut(); setTimeout(()=>navigate('account'),100);">Start Free Trial →</button>
+        </div>
+      </div>
+
       <div class="dash-head">
         <div>
           <div class="dash-greeting">Welcome back, <span id="userName">—</span></div>
@@ -3470,6 +3641,22 @@
 <!-- TOAST -->
 <div class="toast" id="toast">Saved.</div>
 
+<!-- ADDRESS / CARRIER PICKER MODAL -->
+<div class="modal-bg" id="pickerModal" onclick="if(event.target===this)closePicker()">
+  <div class="modal picker-modal">
+    <button class="modal-close" onclick="closePicker()">×</button>
+    <h3 id="pickerTitle">Pick from address book</h3>
+    <div class="picker-search-wrap">
+      <input type="text" id="pickerSearch" class="picker-search" placeholder="Search by name, city, SCAC..." oninput="renderPickerList()">
+    </div>
+    <div class="picker-list" id="pickerList"></div>
+    <div class="picker-foot">
+      <button class="btn btn-ghost" onclick="closePicker()">Cancel</button>
+      <button class="btn" id="pickerManageBtn" onclick="closePicker(); navigate('account');">Manage in Dashboard →</button>
+    </div>
+  </div>
+</div>
+
 <!-- PRO MODAL -->
 <div class="modal-bg" id="proModal" onclick="if(event.target===this)closeProModal()">
   <div class="modal">
@@ -3517,6 +3704,8 @@
     document.querySelectorAll('.nav a').forEach(a => a.classList.remove('active'));
     const navItem = document.getElementById('nav-' + page);
     if (navItem) navItem.classList.add('active');
+    // Defensive: re-apply demo state on every navigation so the stamp and guards stay correct
+    if (typeof applyDemoState === 'function') applyDemoState();
     window.scrollTo(0, 0);
   }
 
@@ -3539,6 +3728,25 @@
   bolInput.value = generateBolNumber();
 
   // (Barcode rendering removed — carriers apply their own scannable labels in practice)
+
+  // === Auto-grow textareas as user types so addresses don't get clipped ===
+  // Runs once on load to size pre-filled fields, then on every input event.
+  function autoGrowTextarea(ta) {
+    if (!ta) return;
+    ta.style.height = 'auto';
+    ta.style.height = Math.max(60, ta.scrollHeight) + 'px';
+  }
+  function autoGrowAllTextareas() {
+    document.querySelectorAll('.fb textarea').forEach(autoGrowTextarea);
+  }
+  document.addEventListener('input', (e) => {
+    if (e.target && e.target.matches && e.target.matches('.fb textarea')) {
+      autoGrowTextarea(e.target);
+    }
+  });
+  // Run before printing so the print version has correct heights, and after page loads
+  window.addEventListener('beforeprint', autoGrowAllTextareas);
+  window.addEventListener('load', autoGrowAllTextareas);
 
   // ============== TABLES ==============
   function addOrderRow(data = {}) {
@@ -3594,8 +3802,32 @@
     if (!bolInput.value) {
       bolInput.value = generateBolNumber();
     }
+    // Demo mode warning + reminder about browser print settings
+    if (IS_DEMO) {
+      const proceed = confirm(
+        'DEMO MODE — your printed BOL will include a "DEMO" watermark.\n\n' +
+        'In the print dialog, make sure "Background graphics" is enabled so the watermark prints.\n\n' +
+        'Sign up for a free account to generate clean, watermark-free BOLs.\n\n' +
+        'Continue?'
+      );
+      if (!proceed) return;
+    }
     window.print();
     setTimeout(() => showAd(), 1200);
+  }
+
+  // Used by the dashboard drawer's Download/Re-Print buttons. Same demo guard.
+  function printFromDrawer() {
+    if (IS_DEMO) {
+      const proceed = confirm(
+        'DEMO MODE — your printed BOL will include a "DEMO" watermark.\n\n' +
+        'In the print dialog, make sure "Background graphics" is enabled so the watermark prints.\n\n' +
+        'Sign up for a free account to generate clean, watermark-free BOLs.\n\n' +
+        'Continue?'
+      );
+      if (!proceed) return;
+    }
+    window.print();
   }
 
   // ============== TOAST ==============
@@ -3674,13 +3906,60 @@
       ctaAction: 'url',
       ctaUrl: 'https://trygoobs.com',
       brandColor: '#FF69B4'
+    },
+    {
+      kind: 'sponsor',
+      sponsor: 'GOOBS',
+      tagline: '100mg caffeine · 100mg citicoline · 0g BS',
+      h: '<span class="hl">3 PM slump?</span> Eat 4 gummies.',
+      pain: 'Energy drink crash, coffee jitters, that weird "pre-workout face tingle" — none of that. Clean energy, clean focus.',
+      p: 'Goobs hits in 15 minutes and lasts 4 hours. Same caffeine as a strong coffee, plus citicoline for actual focus. Not just a buzz.',
+      cta: 'Get Goobs — trygoobs.com →',
+      ctaAction: 'url',
+      ctaUrl: 'https://trygoobs.com',
+      brandColor: '#FFB347'
+    },
+    {
+      kind: 'sponsor',
+      sponsor: 'GOOBS',
+      tagline: 'Vegan · Gluten-Free · Lab-Tested · Made in USA',
+      h: 'Pre-workout that fits in your <span class="hl">glove box.</span>',
+      pain: 'Forgot the shaker. Spilled the powder. Your truck cab smells like artificial blue raspberry. There\'s a better way.',
+      p: 'Goobs are pre-workout gummies. No water, no mixing, no mess. Toss a 30-count bag in the rig and you\'re set for the month. Battle Berry or Golden Hour, both slap.',
+      cta: 'Order a Bag — $26.99 →',
+      ctaAction: 'url',
+      ctaUrl: 'https://trygoobs.com',
+      brandColor: '#FF8C42'
     }
   ];
 
-  let adIndex = 0;
+  // === Randomized ad rotation (Fisher-Yates shuffle, no repeats until full cycle) ===
+  let adQueue = [];
+  let lastAdIndex = -1;
+
+  function reshuffleAds() {
+    // build a shuffled queue of indices, ensuring the first one isn't a repeat of last shown
+    adQueue = ADS.map((_, i) => i);
+    // Fisher-Yates
+    for (let i = adQueue.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [adQueue[i], adQueue[j]] = [adQueue[j], adQueue[i]];
+    }
+    // if first ad in new queue is the same as the last one we just showed, swap it
+    if (adQueue.length > 1 && adQueue[0] === lastAdIndex) {
+      [adQueue[0], adQueue[1]] = [adQueue[1], adQueue[0]];
+    }
+  }
+
+  function pickNextAd() {
+    if (adQueue.length === 0) reshuffleAds();
+    const idx = adQueue.shift();
+    lastAdIndex = idx;
+    return ADS[idx];
+  }
+
   function showAd() {
-    const ad = ADS[adIndex % ADS.length];
-    adIndex++;
+    const ad = pickNextAd();
 
     const isSponsor = ad.kind === 'sponsor';
     const labelText = isSponsor
@@ -3967,6 +4246,7 @@
   // ============== ACCOUNT / AUTH (simulated for prototype) ==============
   // In production: replace with Supabase auth, Postgres for BOLs/addresses
   let CURRENT_USER = null;
+  let IS_DEMO = false;
 
   // Demo data — pre-populated when user clicks "Try Demo Account"
   const DEMO_USER = {
@@ -4088,22 +4368,48 @@
   }
 
   function demoLogin() {
-    loginAs(DEMO_USER);
-    showToast('Logged in as demo ✓');
+    loginAs(DEMO_USER, /* isDemo */ true);
+    showToast('Browsing demo account — read only ✓');
   }
 
-  function loginAs(user) {
+  function loginAs(user, isDemo) {
     CURRENT_USER = user;
+    IS_DEMO = !!isDemo;
     document.getElementById('userName').textContent = user.name;
-    document.getElementById('userCompany').textContent = user.company;
+    document.getElementById('userCompany').textContent = user.company + (IS_DEMO ? ' (demo)' : '');
     document.getElementById('account-loggedout').style.display = 'none';
     document.getElementById('account-loggedin').style.display = 'block';
+    applyDemoState();
     renderDashboard();
+  }
+
+  // === Defensive: keep body.is-demo class in sync with IS_DEMO at all times ===
+  // Called on every navigate() and after any login/logout, so the demo stamp
+  // and read-only guards always reflect the current state.
+  function applyDemoState() {
+    if (IS_DEMO) {
+      document.body.classList.add('is-demo');
+    } else {
+      document.body.classList.remove('is-demo');
+    }
+    const banner = document.getElementById('demoBanner');
+    if (banner) banner.style.display = IS_DEMO ? 'block' : 'none';
+  }
+
+  // ===== Demo guard — blocks any write/save action when in demo mode =====
+  function demoGuard(action) {
+    if (!IS_DEMO) return false;
+    showToast('Demo is read-only. Sign up free to save your own data.');
+    return true;
   }
 
   function signOut() {
     if (!confirm('Sign out?')) return;
     CURRENT_USER = null;
+    IS_DEMO = false;
+    document.body.classList.remove('is-demo');
+    const banner = document.getElementById('demoBanner');
+    if (banner) banner.style.display = 'none';
     document.getElementById('account-loggedout').style.display = 'block';
     document.getElementById('account-loggedin').style.display = 'none';
     showToast('Signed out');
@@ -4201,17 +4507,148 @@
   }
 
   // pill click on the BOL form: if logged in, use default carrier; else prompt upgrade
-  function useCarrierProfile() {
+  // ============== ADDRESS BOOK + CARRIER PICKER ==============
+  // Tracks which field the picker is currently filling: 'shipFrom' | 'shipTo' | 'carrier'
+  let pickerMode = null;
+
+  function openAddressPicker(mode) {
+    // mode = 'shipFrom' or 'shipTo'
     if (!CURRENT_USER) {
       openProModal();
       return;
     }
-    // find default carrier
-    const def = DEMO_CARRIERS.find(c => c.isDefault) || DEMO_CARRIERS[0];
-    document.getElementById('carrierNameInput').value = def.name;
-    document.getElementById('scacInput').value = def.scac;
-    showToast(`Loaded ${def.name} from carrier profile ✓`);
+    pickerMode = mode;
+    const titleEl = document.getElementById('pickerTitle');
+    titleEl.textContent = mode === 'shipFrom' ? 'Pick Ship From address' : 'Pick Ship To address';
+    document.getElementById('pickerSearch').value = '';
+    document.getElementById('pickerSearch').placeholder = 'Search by name, city, ZIP...';
+    document.getElementById('pickerManageBtn').textContent = 'Manage Address Book →';
+    renderPickerList();
+    document.getElementById('pickerModal').classList.add('show');
+    setTimeout(() => document.getElementById('pickerSearch').focus(), 50);
   }
+
+  function openCarrierPicker() {
+    if (!CURRENT_USER) {
+      openProModal();
+      return;
+    }
+    pickerMode = 'carrier';
+    document.getElementById('pickerTitle').textContent = 'Pick a carrier';
+    document.getElementById('pickerSearch').value = '';
+    document.getElementById('pickerSearch').placeholder = 'Search by name or SCAC...';
+    document.getElementById('pickerManageBtn').textContent = 'Manage Carriers →';
+    renderPickerList();
+    document.getElementById('pickerModal').classList.add('show');
+    setTimeout(() => document.getElementById('pickerSearch').focus(), 50);
+  }
+
+  function closePicker() {
+    document.getElementById('pickerModal').classList.remove('show');
+    pickerMode = null;
+  }
+
+  function renderPickerList() {
+    const listEl = document.getElementById('pickerList');
+    if (!listEl) return;
+    const q = (document.getElementById('pickerSearch')?.value || '').trim().toLowerCase();
+
+    if (pickerMode === 'carrier') {
+      // CARRIERS
+      const carriers = DEMO_CARRIERS.filter(c => {
+        if (!q) return true;
+        return (c.name || '').toLowerCase().includes(q) ||
+               (c.scac || '').toLowerCase().includes(q) ||
+               (c.mc || '').toLowerCase().includes(q);
+      });
+      if (carriers.length === 0) {
+        listEl.innerHTML = `<div class="picker-empty">${q ? 'No carriers match.' : 'No carriers saved yet. Add one in the dashboard.'}</div>`;
+        return;
+      }
+      listEl.innerHTML = carriers.map(c => {
+        const realIdx = DEMO_CARRIERS.indexOf(c);
+        const tag = c.isDefault
+          ? '<span class="picker-item-tag default">Default</span>'
+          : '<span class="picker-item-tag carrier">Carrier</span>';
+        const body = [c.scac && `SCAC: ${c.scac}`, c.mc, c.dot].filter(Boolean).join(' · ');
+        return `
+          <div class="picker-item" onclick="pickCarrier(${realIdx})">
+            <div class="picker-item-main">
+              <div class="picker-item-name">${escapeHtml(c.name)}</div>
+              <div class="picker-item-body">${escapeHtml(body)}</div>
+            </div>
+            ${tag}
+          </div>
+        `;
+      }).join('');
+    } else {
+      // ADDRESSES
+      const addrs = DEMO_ADDRS.filter(a => {
+        if (!q) return true;
+        return (a.name || '').toLowerCase().includes(q) ||
+               (a.body || '').toLowerCase().includes(q);
+      });
+      if (addrs.length === 0) {
+        listEl.innerHTML = `<div class="picker-empty">${q ? 'No addresses match.' : 'No addresses saved yet. Add one in the dashboard.'}</div>`;
+        return;
+      }
+      listEl.innerHTML = addrs.map(a => {
+        const realIdx = DEMO_ADDRS.indexOf(a);
+        const tag = a.tag === 'consignee'
+          ? '<span class="picker-item-tag consignee">Consignee</span>'
+          : '<span class="picker-item-tag shipper">Shipper</span>';
+        return `
+          <div class="picker-item" onclick="pickAddress(${realIdx})">
+            <div class="picker-item-main">
+              <div class="picker-item-name">${escapeHtml(a.name)}</div>
+              <div class="picker-item-body">${escapeHtml(a.body || '')}</div>
+            </div>
+            ${tag}
+          </div>
+        `;
+      }).join('');
+    }
+  }
+
+  function pickAddress(idx) {
+    const a = DEMO_ADDRS[idx];
+    if (!a || !pickerMode) return;
+    const composed = `${a.name}\n${a.body || ''}`.trim();
+    const targetKey = pickerMode === 'shipFrom' ? 'shipFrom' : 'shipTo';
+    const ta = document.querySelector(`textarea[data-key="${targetKey}"]`);
+    if (ta) {
+      ta.value = composed;
+      autoGrowTextarea(ta);
+      ta.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+    showToast(`${pickerMode === 'shipFrom' ? 'Ship From' : 'Ship To'}: ${a.name} ✓`);
+    closePicker();
+  }
+
+  function pickCarrier(idx) {
+    const c = DEMO_CARRIERS[idx];
+    if (!c) return;
+    const nameEl = document.getElementById('carrierNameInput');
+    const scacEl = document.getElementById('scacInput');
+    if (nameEl) nameEl.value = c.name || '';
+    if (scacEl) scacEl.value = c.scac || '';
+    showToast(`Carrier: ${c.name} ✓`);
+    closePicker();
+  }
+
+  // simple HTML escaping for picker rows
+  function escapeHtml(s) {
+    if (s == null) return '';
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  // (legacy) keep useCarrierProfile name as a thin alias for any old callers
+  function useCarrierProfile() { openCarrierPicker(); }
 
   function dashTab(name, evt) {
     document.querySelectorAll('#page-account .res-tab').forEach(t => t.classList.remove('active'));
@@ -4318,10 +4755,10 @@
       </div>
 
       <div class="bd-actions">
-        <button class="btn" onclick="event.stopPropagation(); openBol(${i}); setTimeout(()=>window.print(), 500);">📄 Download PDF</button>
+        <button class="btn" onclick="event.stopPropagation(); openBol(${i}); setTimeout(()=>printFromDrawer(), 500);">📄 Download PDF</button>
         <button class="btn" onclick="event.stopPropagation(); openBol(${i})">📋 Duplicate as New BOL</button>
         <button class="btn" onclick="event.stopPropagation(); emailBolToConsignee(${i})">✉ Email to Consignee</button>
-        <button class="btn btn-pro" onclick="event.stopPropagation(); openBol(${i}); setTimeout(()=>window.print(), 500);" style="margin-left:auto;">🖨 Re-Print</button>
+        <button class="btn btn-pro" onclick="event.stopPropagation(); openBol(${i}); setTimeout(()=>printFromDrawer(), 500);" style="margin-left:auto;">🖨 Re-Print</button>
       </div>
     `;
   }
@@ -4339,6 +4776,12 @@
 
   // === UPDATE STATUS — triggers activity log entry + re-render ===
   function updateBolStatus(idx, newStatus) {
+    if (demoGuard()) {
+      // re-render drawer to revert select to original value
+      const b = DEMO_BOLS[idx];
+      if (b) document.getElementById('drawer-content-' + idx).innerHTML = renderDrawerContent(idx);
+      return;
+    }
     const b = DEMO_BOLS[idx];
     if (!b || b.status === newStatus) return;
     const oldStatus = b.status;
@@ -4372,6 +4815,13 @@
 
   // === UPDATE RATE ===
   function saveBolRate(idx, newVal) {
+    if (demoGuard()) {
+      // revert input to original
+      const b = DEMO_BOLS[idx];
+      const input = document.getElementById('rate-' + idx);
+      if (b && input) input.value = b.rate;
+      return;
+    }
     const b = DEMO_BOLS[idx];
     if (!b) return;
     const v = parseFloat(newVal);
@@ -4392,6 +4842,7 @@
 
   // === ADD CUSTOM ACTIVITY NOTE ===
   function addActivityNote(idx) {
+    if (demoGuard()) return;
     const input = document.getElementById('activity-input-' + idx);
     const txt = input?.value.trim();
     if (!txt) return;
@@ -4444,6 +4895,7 @@
   }
 
   function saveBolNotes(idx) {
+    if (demoGuard()) return;
     const ta = document.getElementById('notes-' + idx);
     if (!ta) return;
     BOL_NOTES[idx] = ta.value;
@@ -4654,12 +5106,16 @@
     const av = document.getElementById('accountAvatar');
     if (btn) btn.textContent = user.name.split(' ')[0];
     if (av) av.textContent = user.name.charAt(0).toUpperCase();
-    // pill turns green when Pro user is logged in
-    const pill = document.getElementById('carrierProfilePill');
-    if (pill) {
-      pill.innerHTML = 'Use Carrier Profile';
-      pill.classList.add('pro-active');
-    }
+    // all 3 pills turn green/active when logged in
+    ['shipFromPill', 'shipToPill', 'carrierProfilePill'].forEach(id => {
+      const p = document.getElementById(id);
+      if (p) {
+        if (id === 'carrierProfilePill') p.innerHTML = '⌄ Pick from carriers';
+        else if (id === 'shipFromPill') p.innerHTML = '⌄ Pick from address book';
+        else p.innerHTML = '⌄ Pick from address book';
+        p.classList.add('pro-active');
+      }
+    });
   };
 
   const _origSignOut = signOut;
@@ -4669,11 +5125,14 @@
     const av = document.getElementById('accountAvatar');
     if (btn) btn.textContent = 'Sign In';
     if (av) av.textContent = '?';
-    const pill = document.getElementById('carrierProfilePill');
-    if (pill) {
-      pill.innerHTML = 'From Carrier Profile (Pro)';
-      pill.classList.remove('pro-active');
-    }
+    ['shipFromPill', 'shipToPill', 'carrierProfilePill'].forEach(id => {
+      const p = document.getElementById(id);
+      if (p) {
+        if (id === 'carrierProfilePill') p.innerHTML = '⌄ Pick from carriers (Pro)';
+        else p.innerHTML = '⌄ Pick from address book (Pro)';
+        p.classList.remove('pro-active');
+      }
+    });
   };
 
   // initial dropdown render
@@ -4694,6 +5153,7 @@
 
   // === Logo upload ===
   function handleLogoUpload(e) {
+    if (demoGuard()) { e.target.value = ''; return; }
     const file = e.target.files[0];
     if (!file) return;
     if (file.size > 2 * 1024 * 1024) { alert('Logo must be under 2MB.'); return; }
@@ -4791,6 +5251,7 @@
   }
 
   function saveSigPad(role) {
+    if (demoGuard()) return;
     const canvas = document.getElementById('sigPad' + role);
     if (!canvas) return;
     const dataUrl = canvas.toDataURL('image/png');
@@ -4832,6 +5293,7 @@
 
   // === Default values prefs ===
   function savePrefs() {
+    if (demoGuard()) return;
     USER_PREFS.defaultShipFrom = (document.getElementById('prefShipFrom')?.value || '').trim();
     USER_PREFS.defaultCarrier = (document.getElementById('prefCarrier')?.value || '').trim();
     USER_PREFS.defaultFeeTerms = (document.getElementById('prefFeeTerms')?.value || '');
@@ -5158,6 +5620,7 @@
   // These use prompt() for prototype demos. In production: real modal forms.
 
   function addNewAddress() {
+    if (demoGuard()) return;
     const name = prompt('Address name (e.g. "Acme Manufacturing")');
     if (!name) return;
     const street = prompt('Street address (e.g. "1234 Industrial Blvd")');
@@ -5176,6 +5639,7 @@
   }
 
   function editAddress(idx) {
+    if (demoGuard()) return;
     const a = DEMO_ADDRS[idx];
     if (!a) return;
     // parse existing body — split by newlines to figure out current values
@@ -5208,6 +5672,7 @@
   }
 
   function addNewCarrier() {
+    if (demoGuard()) return;
     const name = prompt('Carrier name (e.g. "Coastal Freight Co.")');
     if (!name) return;
     const scac = (prompt('SCAC code (4 letters, e.g. CFCO)') || '').toUpperCase().slice(0, 4);
@@ -5236,6 +5701,7 @@
   }
 
   function inviteTeamMember() {
+    if (demoGuard()) return;
     const email = prompt('Team member email address');
     if (!email) return;
     if (!email.includes('@')) { alert('Invalid email.'); return; }
@@ -5246,6 +5712,7 @@
   }
 
   function editCarrier(idx) {
+    if (demoGuard()) return;
     const c = DEMO_CARRIERS[idx];
     if (!c) return;
     const name = prompt('Carrier name', c.name);
@@ -5259,6 +5726,7 @@
   }
 
   function setDefaultCarrier(idx) {
+    if (demoGuard()) return;
     DEMO_CARRIERS.forEach((c, i) => c.isDefault = (i === idx));
     renderDashboard();
     showToast(`${DEMO_CARRIERS[idx].name} is now your default carrier ✓`);
@@ -5270,10 +5738,15 @@
       alert('You already have an account. Trial flow would convert your free account to Pro trial.');
       return;
     }
-    if (confirm('Start 14-day free trial?\n\n• No credit card required for trial\n• Day 14: $9.99/mo or cancel\n• Cancel anytime\n\nIn production, this opens Stripe Checkout. For demo, this signs you in as a Pro user.')) {
-      navigate('account');
-      setTimeout(() => demoLogin(), 200);
-    }
+    const email = prompt('Enter your email to start the 14-day free trial:\n\n• No credit card required\n• Day 15: trial reverts to free unless you upgrade\n• Cancel anytime');
+    if (!email) return;
+    if (!email.includes('@')) { alert('Please enter a valid email address.'); return; }
+    // create a real (non-demo) user — IS_DEMO stays false, no watermark, full save access
+    const name = email.split('@')[0];
+    const company = name.charAt(0).toUpperCase() + name.slice(1) + '\'s Workspace';
+    loginAs({ name, email, company }, /* isDemo */ false);
+    navigate('account');
+    showToast('14-day free trial started — welcome ✓');
   }
 
   function forgotPassword() {
