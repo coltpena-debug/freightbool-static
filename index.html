@@ -2651,7 +2651,7 @@
           <li>Saved carrier profiles</li>
           <li>API access for TMS integration</li>
           <li><strong>+$2.99/mo per additional team member</strong></li>
-          <li>14-day free trial · no card required</li>
+          <li>14-day free trial · cancel anytime</li>
         </ul>
         <button class="btn btn-pro" style="width:100%;" onclick="openProModal()">Start Free Trial</button>
       </div>
@@ -3030,7 +3030,7 @@
 
     <div class="compare-cta">
       <h2>Ready to upgrade?</h2>
-      <p class="compare-sub">14-day free trial. No card required.</p>
+      <p class="compare-sub">14-day free trial. Cancel anytime before day 15.</p>
       <button class="btn btn-pro" style="font-size:14px; padding: 16px 32px;" onclick="openProModal()">Start Free Trial →</button>
     </div>
 
@@ -3086,7 +3086,7 @@
         <div class="auth-card auth-featured">
           <div class="auth-tag">14-DAY FREE TRIAL</div>
           <h2>Start Free Trial</h2>
-          <p class="auth-sub">No credit card required. Full Pro access for 14 days.</p>
+          <p class="auth-sub">14-day free trial. Card on file required, cancel anytime.</p>
           <div class="auth-row">
             <label>Company Name</label>
             <input type="text" id="signupCompany" placeholder="e.g. Acme Logistics">
@@ -3112,7 +3112,7 @@
         <div class="demo-banner-inner">
           <span class="demo-banner-tag">◆ DEMO</span>
           <span class="demo-banner-text">You're browsing a sample Pro account. All saving and editing is disabled. Want your own?</span>
-          <button class="demo-banner-cta" onclick="signOut(); setTimeout(()=>navigate('account'),100);">Start Free Trial →</button>
+          <button class="demo-banner-cta" onclick="window.open('https://app.freightbol.org/auth/sign-up','_blank')">Start Free Trial →</button>
         </div>
       </div>
 
@@ -3374,7 +3374,7 @@
           <p>You may use the free tier without creating an account. Pro subscriptions require a valid email and payment method. You are responsible for keeping your login credentials secure and for all activity on your account.</p>
 
           <h3>4. Subscription, Billing & Auto-Renewal</h3>
-          <p>Pro subscriptions are billed monthly at $9.99/month or annually (where offered). Subscriptions <strong>automatically renew</strong> at the end of each billing cycle until you cancel. You may cancel at any time from your account settings. Cancellation takes effect at the end of the current billing period; we do not pro-rate refunds for unused time. New accounts may start a 14-day free trial of Pro features without entering a payment method. At the end of the trial, your account reverts to the free tier unless you choose to upgrade by adding payment information. We will not charge any card without your explicit consent.</p>
+          <p>Pro subscriptions are billed monthly at $9.99/month or annually (where offered). Subscriptions <strong>automatically renew</strong> at the end of each billing cycle until you cancel. You may cancel at any time from your account settings. Cancellation takes effect at the end of the current billing period; we do not pro-rate refunds for unused time. New accounts may start a 14-day free trial of Pro features by entering a valid payment method during checkout. You will not be charged during the 14-day trial period. If you do not cancel before the trial ends, your card will be automatically charged for the selected plan. You may cancel at any time during the trial from your account settings to avoid any charges.</p>
 
           <h3>5. Acceptable Use</h3>
           <p>You agree not to: (a) use the Service for any illegal purpose; (b) attempt to reverse-engineer, scrape, or republish the Service; (c) generate fraudulent, misleading, or counterfeit BOL documents; (d) resell access to your Pro account.</p>
@@ -3453,7 +3453,7 @@
           <p class="legal-tldr">⚡ TL;DR — Cancel anytime, no questions asked. We don't pro-rate, but we will refund the most recent month's charge if you cancel within 7 days and contact support.</p>
 
           <h3>Free Trial</h3>
-          <p>New Pro accounts get a 14-day free trial. No credit card required to start the trial. Your card is charged only after the trial ends. Cancel anytime during the trial — you won't be charged.</p>
+          <p>New Pro accounts get a 14-day free trial. A valid card is required to start the trial — but you won't be charged during the trial period. Your card is automatically charged when the trial ends unless you cancel first. Cancel anytime during the trial from your account settings to avoid any charges.</p>
 
           <h3>Cancellation</h3>
           <p>Cancel anytime from <strong>Account → Settings → Billing → Manage Subscription</strong>. Cancellation is immediate; you retain Pro access through the end of your current billing period.</p>
@@ -3672,8 +3672,8 @@
       <li>NMFC class lookup, HOS tracker, lane rate benchmark</li>
       <li>No ads, ever</li>
     </ul>
-    <button class="btn btn-pro" style="width:100%;" onclick="startTrialFlow()">Start 14-Day Free Trial →</button>
-    <p style="font-size:11px; margin-top:12px; text-align:center; color:#6a6c60;">No credit card required for trial.</p>
+    <button class="btn btn-pro" style="width:100%;" onclick="window.open('https://app.freightbol.org/pricing','_blank')">Start 14-Day Free Trial →</button>
+    <p style="font-size:11px; margin-top:12px; text-align:center; color:#6a6c60;">14-day free trial. Cancel anytime before day 15.</p>
   </div>
 </div>
 
@@ -4350,21 +4350,13 @@
   ];
 
   function signIn() {
-    const email = document.getElementById('loginEmail').value.trim();
-    const pwd = document.getElementById('loginPassword').value;
-    if (!email || !pwd) { alert('Enter email and password.'); return; }
-    // simulate auth
-    loginAs({ name: email.split('@')[0], company: email.split('@')[1] || 'Your Company', email });
+    // Redirect to the real app — auth happens at app.freightbol.org
+    window.open('https://app.freightbol.org/auth/login', '_blank');
   }
 
   function signUp() {
-    const company = document.getElementById('signupCompany').value.trim();
-    const email = document.getElementById('signupEmail').value.trim();
-    const pwd = document.getElementById('signupPassword').value;
-    if (!company || !email || !pwd) { alert('Fill in all fields.'); return; }
-    if (pwd.length < 8) { alert('Password must be 8+ characters.'); return; }
-    loginAs({ name: email.split('@')[0], company, email });
-    showToast('14-day trial started ✓');
+    // Redirect to the real app — signup happens at app.freightbol.org
+    window.open('https://app.freightbol.org/auth/sign-up', '_blank');
   }
 
   function demoLogin() {
@@ -5734,19 +5726,8 @@
 
   function startTrialFlow() {
     closeProModal();
-    if (CURRENT_USER) {
-      alert('You already have an account. Trial flow would convert your free account to Pro trial.');
-      return;
-    }
-    const email = prompt('Enter your email to start the 14-day free trial:\n\n• No credit card required\n• Day 15: trial reverts to free unless you upgrade\n• Cancel anytime');
-    if (!email) return;
-    if (!email.includes('@')) { alert('Please enter a valid email address.'); return; }
-    // create a real (non-demo) user — IS_DEMO stays false, no watermark, full save access
-    const name = email.split('@')[0];
-    const company = name.charAt(0).toUpperCase() + name.slice(1) + '\'s Workspace';
-    loginAs({ name, email, company }, /* isDemo */ false);
-    navigate('account');
-    showToast('14-day free trial started — welcome ✓');
+    // Redirect to the real app's pricing page where Stripe Checkout happens
+    window.open('https://app.freightbol.org/pricing', '_blank');
   }
 
   function forgotPassword() {
