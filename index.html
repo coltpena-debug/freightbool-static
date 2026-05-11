@@ -458,7 +458,12 @@
     line-height: 1.4;
   }
   .fb input[type="text"]:focus, .fb input[type="number"]:focus, .fb input[type="date"]:focus, .fb input[type="email"]:focus, .fb input[type="password"]:focus, .fb textarea:focus, .fb select:focus { background: #d6eef3; outline: 1.5px solid var(--accent-2); }
-  .fb textarea { min-height: 60px; }
+  .fb textarea {
+    min-height: 60px;
+    overflow: hidden;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
 
   .fb-row {
     display: grid;
@@ -3746,6 +3751,12 @@
     document.querySelectorAll('.fb textarea').forEach(autoGrowTextarea);
   }
   document.addEventListener('input', (e) => {
+    if (e.target && e.target.matches && e.target.matches('.fb textarea')) {
+      autoGrowTextarea(e.target);
+    }
+  });
+  // Also fire on focus/blur in case a programmatic value change didn't trigger input
+  document.addEventListener('focusin', (e) => {
     if (e.target && e.target.matches && e.target.matches('.fb textarea')) {
       autoGrowTextarea(e.target);
     }
