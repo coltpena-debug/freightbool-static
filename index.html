@@ -2131,11 +2131,10 @@
       background: white !important; padding: 0 2px !important;
       font-size: 8pt !important; line-height: 1.18 !important;
     }
-    /* Critical: allow textareas to grow to show full content in print.
-       min-height ensures visual consistency, height:auto lets longer addresses expand. */
+    /* Critical: textareas keep the inline height set by autoGrowTextarea (runs beforeprint).
+       Do NOT set height:auto here — it would override the JS-computed height and clip content. */
     .fb textarea {
-      min-height: 48px !important;
-      height: auto !important;
+      min-height: 60px !important;
       overflow: visible !important;
       white-space: pre-wrap !important;
       word-wrap: break-word !important;
@@ -3744,8 +3743,11 @@
   // Runs once on load to size pre-filled fields, then on every input event.
   function autoGrowTextarea(ta) {
     if (!ta) return;
-    ta.style.height = 'auto';
-    ta.style.height = Math.max(60, ta.scrollHeight) + 'px';
+    // Reset to a small height so scrollHeight reflects the true content size
+    ta.style.height = '0px';
+    // scrollHeight excludes border, so add 2px buffer for borders + a little breathing room
+    const target = Math.max(60, ta.scrollHeight + 4);
+    ta.style.height = target + 'px';
   }
   function autoGrowAllTextareas() {
     document.querySelectorAll('.fb textarea').forEach(autoGrowTextarea);
